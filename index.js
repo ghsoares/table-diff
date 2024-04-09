@@ -1,6 +1,6 @@
 import moment from "moment";
 import { existsSync, mkdirSync, readFile, readFileSync } from "node:fs";
-import { dirname } from "node:path";
+import path, { dirname } from "node:path";
 import { createInterface } from "node:readline";
 import XLSX from "xlsx-js-style";
 
@@ -414,47 +414,51 @@ rl.questionAsync = function (query) {
 	});
 };
 
+const setExtension = (pathStr, ext) => {
+	return path.format({
+		...path.parse(pathStr),
+		base: '',
+		ext
+	})
+}
+
+const readConfig = (basePath, configPath) => {
+	const configFilename = path.resolve(basePath, setExtension(configPath, 'json'));
+	const configBasePath = path.dirname(configFilename);
+	const data = readFileSync(configFilename, { encoding: 'utf-8' });
+	const config = JSON.parse(data);
+	const settings = [];
+
+	config.forEach(conf => {
+		if (conf.disabled) return;
+		if (conf.configPath) {
+			const innerConfig = readConfig(configBasePath, conf.configPath);
+			settings.push(...innerConfig);
+		} else {
+			settings.push(conf);
+		}
+	});
+
+	return settings;
+};
+
 while (true) {
 	const choise = await rl.questionAsync(query);
 
 	let configPath = null;
 	switch (choise.trim()) {
-		case '0': configPath = await rl.questionAsync('Insira o nome da configuração JSON a ser utilizada (relativo á pasta de execução, sem a extensão):\n'); break;
+		case '0': configPath = await rl.questionAsync('Insira o nome da configuração JSON a ser utilizada (relativo á pasta de execução):\n'); break;
 		case '1': configPath = 'config/structure_group_compare'; break;
 		case '2': configPath = 'config/structure_mapping_compare'; break;
 		case '3': configPath = 'config/structure_input_mapping_compare'; break;
 	}
 	if (configPath != null) {
-		const data = readFileSync(configPath + ".json", { encoding: 'utf-8' });
+		const config = readConfig(process.cwd(), configPath);
 
-		const config = JSON.parse(data);
-		let settings = config;
-		let finishedParsing = false;
-
-		while (!finishedParsing) {
-			finishedParsing = true;
-			const newSettings = [];
-
-			settings.forEach(setting => {
-				if (setting.disabled) return;
-				if (setting.configPath) {
-					finishedParsing = false;
-					const innerData = readFileSync(setting.configPath + ".json", { encoding: 'utf-8' });
-
-					const innerConfig = JSON.parse(innerData);
-					newSettings.push(...innerConfig);
-				} else {
-					newSettings.push(setting);
-				}
-			});
-
-			settings = newSettings;
-		}
-
-		settings.forEach(setting => {
-			console.log(`Executando '${setting.name}'...`);
-			compareFiles(setting);
-			console.log(`Executado '${setting.name}' com sucesso.`);
+		config.forEach(conf => {
+			console.log(`Executando '${conf.name}'...`);
+			compareFiles(conf);
+			console.log(`Executado '${conf.name}' com sucesso.`);
 		});
 	} else break;
 }
