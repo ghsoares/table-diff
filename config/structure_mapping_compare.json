@@ -1,0 +1,26 @@
+[
+	{
+		"name": "Mapeamento de Estruturas",
+		"beforeFile": "input/PFS/structure/ATR_StructureFieldMapping.csv",
+		"afterFile": "input/TC2/structure/ATR_StructureFieldMapping.csv",
+		"outputFile": "output/structure/ATR_StructureFieldMapping",
+		"beforeEnvironment": "PFS",
+		"afterEnvironment": "TC2",
+		"keys": [
+			"STRUCTURE_ID",
+			"MAPPING_ID"
+		]
+	},
+	{
+		"name": "Tributos por Mapeamento de Estruturas",
+		"beforeFile": "input/PFS/structure/ATR_StructureFieldMappingXTributo.csv",
+		"afterFile": "input/TC2/structure/ATR_StructureFieldMappingXTributo.csv",
+		"outputFile": "output/structure/ATR_StructureFieldMappingXTributo",
+		"beforeEnvironment": "PFS",
+		"afterEnvironment": "TC2",
+		"keys": [
+			"STRUCTURE_ID",
+			"MAPPING_ID"
+		]
+	}
+]

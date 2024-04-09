@@ -1,0 +1,11 @@
+[
+	{
+		"useConfig": "structure_group_compare"
+	},
+	{
+		"useConfig": "structure_mapping_compare"
+	},
+	{
+		"useConfig": "structure_input_mapping_compare"
+	}
+]
