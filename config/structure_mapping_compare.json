@@ -9,7 +9,8 @@
 		"keys": [
 			"STRUCTURE_ID",
 			"MAPPING_ID"
-		]
+		],
+		"ignoreFields": ["CREATION.ID_USER", "MODIFICATION.ID_USER", "CREATION_USER", "MODIFICATION_USER", "CREATION.DATE", "MODIFICATION.DATE"]
 	},
 	{
 		"name": "Tributos por Mapeamento de Estruturas",
