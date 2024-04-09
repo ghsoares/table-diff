@@ -1,0 +1,11 @@
+[
+	{
+		"name": "NF",
+		"beforeFile": "input/PFS/nf/NF_BEFORE.csv",
+		"afterFile": "input/PFS/nf/NF_AFTER.csv",
+		"outputFile": "output/nf/NF",
+		"beforeEnvironment": "PFS",
+		"afterEnvironment": "PFS",
+		"keys": ["MANDT", "NF_ID", "NUM_ITEM"]
+	}
+]

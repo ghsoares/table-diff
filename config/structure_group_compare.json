@@ -1,0 +1,25 @@
+[
+	{
+		"name": "Grupos de Estruturas",
+		"beforeFile": "input/PFS/structure/ATR_StructureGroup.csv",
+		"afterFile": "input/TC2/structure/ATR_StructureGroup.csv",
+		"outputFile": "output/structure/ATR_StructureGroup",
+		"beforeEnvironment": "PFS",
+		"afterEnvironment": "TC2",
+		"keys": [
+			"STRUCTURE_GROUP_ID"
+		]
+	},
+	{
+		"name": "Estruturas por Grupos de Estruturas",
+		"beforeFile": "input/PFS/structure/ATR_StructureGroupXStructure.csv",
+		"afterFile": "input/TC2/structure/ATR_StructureGroupXStructure.csv",
+		"outputFile": "output/structure/ATR_StructureGroupXStructure",
+		"beforeEnvironment": "PFS",
+		"afterEnvironment": "TC2",
+		"keys": [
+			"STRUCTURE_GROUP_ID",
+			"STRUCTURE_ID"
+		]
+	}
+]
