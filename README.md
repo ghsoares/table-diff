@@ -31,16 +31,14 @@ Crie um arquivo .json para a configuração, use como template o seguinte conte�
 		"beforeFile": "before/test/ATR_Test.csv",
 		"afterFile": "after/test/ATR_Test.csv",
 		"outputFile": "output/test/ATR_Test",
+		"beforeEnvironment": "PFS",
+		"afterEnvironment": "TC2",
 		"keys": ["LINE_ID"]
 	}
 ]
 ````
 
-- `name`: O nome da execução da comparação, usada para mostrar no terminal qual comparação está sendo executada no momento;
-- `beforeFile`: Caminho relativo á pasta de execução para o arquivo com os dados da tabela anteriormente (geralmente dados de PFS);
-- `afterFile`: Caminho relativo á pasta de execução para o arquivo com os dados da tabela atualmente (geralmente dados de TC2);
-- `outputFile`: Caminho relativo á pasta de execução, para o arquivo de saída com os dados gravados (.xlsl);
-- `keys`: Colunas usadas como chaves para a comparação, pode usar mais de uma para chaves compostas.
+
 
 Note que é possível fazer a comparação de mais de uma tabela, cada uma sendo um objeto de um array do arquivo de configuração:
 
@@ -51,6 +49,8 @@ Note que é possível fazer a comparação de mais de uma tabela, cada uma sendo
 		"beforeFile": "before/test/ATR_Test1.csv",
 		"afterFile": "after/test/ATR_Test1.csv",
 		"outputFile": "output/test/ATR_Test1",
+		"beforeEnvironment": "PFS",
+		"afterEnvironment": "TC2",
 		"keys": ["LINE_ID"]
 	},
 	{
@@ -58,7 +58,22 @@ Note que é possível fazer a comparação de mais de uma tabela, cada uma sendo
 		"beforeFile": "before/test/ATR_Test2.csv",
 		"afterFile": "after/test/ATR_Test2.csv",
 		"outputFile": "output/test/ATR_Test2",
+		"beforeEnvironment": "PFS",
+		"afterEnvironment": "TC2",
 		"keys": ["LINE_ID"]
 	}
 ]
 ````
+
+A lista atual de todas as propriedades configuráveis são:
+
+- `disabled`: Usado para ignorar essa configuração;
+- `name`: O nome da execução da comparação, usada para mostrar no terminal qual comparação está sendo executada no momento;
+- `beforeFile`: Caminho relativo á pasta de execução para o arquivo com os dados da tabela anteriormente (geralmente dados de PFS);
+- `afterFile`: Caminho relativo á pasta de execução para o arquivo com os dados da tabela atualmente (geralmente dados de TC2);
+- `outputFile`: Caminho relativo á pasta de execução, para o arquivo de saída com os dados gravados (.xlsl);
+- `beforeEnvironment`: Usado para identificar qual ambiente possui dados anteriores (para descrição apenas);
+- `afterEnvironment`: Usado para identificar qual ambiente possui dados novos (para descrição apenas);
+- `keys`: Colunas usadas como chaves para a comparação, pode usar mais de uma para chaves compostas;
+- `compareColumns`: Colunas que serão usadas na comparação e que serão mostrados no resultado, deixe sem ou vazio para comparar todas as colunas;
+- `ignoreColumns`: Colunas que não serão usadas na comparação, mas ainda serão mostrados no resultado, deixe sem ou vazio para comparar todas as colunas;
