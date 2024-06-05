@@ -12,11 +12,9 @@ const LINE_MODIFIED = 3;
 const RESULT_MODE_INLINE = 'INLINE';
 const RESULT_MODE_SIDE = 'SIDE';
 
-const mapCsvText = (csvTxt, keys = [], remap = [], compareColumns = null) => {
-	const txtLines = csvTxt.split('\n');
-	let header = txtLines
+const mapSheet = (sheetLines, keys = [], remap = [], compareColumns = null) => {
+	let header = sheetLines
 		.splice(0, 1)[0]
-		.split(';')
 		.map(h => h.trim())
 		.map((h, i) => ({
 			name: h,
@@ -29,13 +27,12 @@ const mapCsvText = (csvTxt, keys = [], remap = [], compareColumns = null) => {
 		header = header.filter(h => compareColumns.indexOf(h.name) != -1);
 	}
 
-	const lines = txtLines.map((l, i) => {
-		const line = l.split(';');
+	const lines = sheetLines.map((line, i) => {
 		const obj = {};
 		line.__i = i;
 		header.forEach(h => {
 			h.idx = h.idx;
-			obj[h.name] = line[h.idx].trim();
+			obj[h.name] = String(line[h.idx]).trim();
 		});
 
 		remap.forEach(r => {
@@ -107,11 +104,17 @@ const mapFiles = ({
 	compareColumns,
 	keys
 }) => {
-	let beforeTxt = readFileSync(beforeFile, { encoding: 'utf8' }).replace(/\r\n/g, '\n');
-	let afterTxt = readFileSync(afterFile, { encoding: 'utf8' }).replace(/\r\n/g, '\n');
+	const beforeBuf = readFileSync(beforeFile, { encoding: 'utf-8' });
+	const afterBuf = readFileSync(afterFile, { encoding: 'utf-8' });
 
-	const before = mapCsvText(beforeTxt, keys, remapBefore, compareColumns);
-	const after = mapCsvText(afterTxt, keys, remapAfter, compareColumns);
+	const beforeSheet = XLSX.read(beforeBuf, { type: 'string' });
+	const afterSheet = XLSX.read(afterBuf, { type: 'string' });
+
+	const beforeJson = XLSX.utils.sheet_to_json(beforeSheet.Sheets[beforeSheet.SheetNames[0]], {header: 1});
+	const afterJson = XLSX.utils.sheet_to_json(afterSheet.Sheets[afterSheet.SheetNames[0]], {header: 1});
+
+	const before = mapSheet(beforeJson, keys, remapBefore, compareColumns);
+	const after = mapSheet(afterJson, keys, remapAfter, compareColumns);
 
 	const keyLengths = keys.map((k, i) => Math.max(before.keyLengths[i], after.keyLengths[i]));
 
@@ -393,8 +396,6 @@ const compareFiles = ({
 	XLSX.writeFile(sheet, `${outputFile}.xlsx`);
 };
 
-// const configPath = 'temp_compare.json';
-
 const rl = createInterface({
 	input: process.stdin,
 	output: process.stdout,
@@ -452,6 +453,7 @@ while (true) {
 		case '2': configPath = 'config/structure_mapping_compare'; break;
 		case '3': configPath = 'config/structure_input_mapping_compare'; break;
 	}
+
 	if (configPath != null) {
 		const config = readConfig(process.cwd(), configPath);
 

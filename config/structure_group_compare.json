@@ -8,7 +8,8 @@
 		"afterEnvironment": "TC2",
 		"keys": [
 			"STRUCTURE_GROUP_ID"
-		]
+		],
+		"ignoreFields": ["CREATION_USER", "MODIFICATION_USER"]
 	},
 	{
 		"name": "Estruturas por Grupos de Estruturas",

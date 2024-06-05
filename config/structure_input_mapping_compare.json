@@ -10,7 +10,7 @@
 			"STRUCTURE_ID",
 			"MAPPING_ID"
 		],
-		"ignoreFields": ["CREATION_USER_ID", "MODIFICATION_USER_ID", "CREATION_USER", "MODIFICATION_USER", "CREATION_DATE", "MODIFICATION_DATE"]
+		"ignoreFields": ["CREATION_USER", "MODIFICATION_USER"]
 	},
 	{
 		"name": "Mapeamento de parâmetros por mapeamento de parâmetros de entrada",
@@ -23,7 +23,7 @@
 			"MAPPING_ID",
 			"INPUT_PARAMETER"
 		],
-		"ignoreFields": ["CREATION_USER_ID", "MODIFICATION_USER_ID", "CREATION_USER", "MODIFICATION_USER", "CREATION_DATE", "MODIFICATION_DATE"]
+		"ignoreFields": ["CREATION_USER", "MODIFICATION_USER"]
 	},
 	{
 		"name": "Mapeamento de parâmetros auxiliares",
@@ -36,6 +36,6 @@
 			"STRUCTURE_ID",
 			"MAPPING_ID"
 		],
-		"ignoreFields": ["CREATION_USER_ID", "MODIFICATION_USER_ID", "CREATION_USER", "MODIFICATION_USER", "CREATION_DATE", "MODIFICATION_DATE"]
+		"ignoreFields": ["CREATION_USER", "MODIFICATION_USER"]
 	}
 ]
