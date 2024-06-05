@@ -3,13 +3,13 @@
 		"name": "Códigos de Receita - TC2 x PFS",
 		"beforeFile": "input/PFS/rev_code/ATR_RevenueCode.csv",
 		"afterFile": "input/TC2/rev_code/ATR_RevenueCode.csv",
-		"outputFile": "output/rev_code/ATR_RevenueCode_PFS",
+		"outputFile": "output/rev_code/ATR_RevenueCode",
 		"beforeEnvironment": "PFS",
 		"afterEnvironment": "TC2",
 		"keys": [
-			"ID"
+			"UF", "UF_DESTINATION", "REVENUE_CODE"
 		],
-		"compareColumns": ["ID", "ID_TAX", "SPHERE", "UF", "REVENUE_CODE"]
+		"compareColumns": ["UF", "UF_DESTINATION", "REVENUE_CODE"]
 	},
 	{
 		"disabled": true,
@@ -20,15 +20,8 @@
 		"beforeEnvironment": "PROD",
 		"afterEnvironment": "TC2",
 		"keys": [
-			"ID"
+			"UF", "UF_DESTINATION", "REVENUE_CODE"
 		],
-		"remapBefore": [{
-			"column": "SPHERE",
-			"type": "CHECK_NULL"
-		}, {
-			"column": "UF",
-			"type": "CHECK_NULL"
-		}],
-		"compareColumns": ["ID", "ID_TAX", "SPHERE", "UF", "REVENUE_CODE"]
+		"compareColumns": ["UF", "UF_DESTINATION", "REVENUE_CODE"]
 	}
 ]
