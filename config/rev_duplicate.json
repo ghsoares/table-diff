@@ -1,0 +1,16 @@
+[
+	{
+		"name": "Códigos de Receita Duplicados",
+		"mode": "duplicate",
+		"beforeFile": "input/TC2/rev_code/ATR_RevenueCode1.csv",
+		"afterFile": "input/TC2/rev_code/ATR_RevenueCode2.csv",
+		"outputFile": "output/rev_code/ATR_RevenueCode_Duplicates",
+		"beforeEnvironment": "TC2 (antes)",
+		"afterEnvironment": "TC2 (depois)",
+		"keys": [
+			"UF", "UF_DESTINATION", "REVENUE_CODE"
+		],
+		"compareColumns": ["ID", "UF", "UF_DESTINATION", "REVENUE_CODE"],
+		"ignoreFields": ["ID"]
+	}
+]

@@ -1,0 +1,42 @@
+[
+	{
+		"name": "NF 01",
+		"beforeFile": "input/test/before01.csv",
+		"afterFile": "input/test/after01.csv",
+		"outputFile": "output/test/check01",
+		"beforeEnvironment": "PFS",
+		"afterEnvironment": "PFS",
+		"keys": ["NF_ID", "NUM_DOC"],
+		"ignoreFields": ["NUM"]
+	},
+	{
+		"name": "NF 02",
+		"beforeFile": "input/test/before02.csv",
+		"afterFile": "input/test/after02.csv",
+		"outputFile": "output/test/check02",
+		"beforeEnvironment": "PFS",
+		"afterEnvironment": "PFS",
+		"keys": ["NF_ID", "NUM_DOC"],
+		"ignoreFields": ["NUM"]
+	},
+	{
+		"name": "NF 03",
+		"beforeFile": "input/test/before03.csv",
+		"afterFile": "input/test/after03.csv",
+		"outputFile": "output/test/check03",
+		"beforeEnvironment": "PFS",
+		"afterEnvironment": "PFS",
+		"keys": ["NF_ID", "NUM_DOC"],
+		"ignoreFields": ["NUM"]
+	},
+	{
+		"name": "NF 04",
+		"beforeFile": "input/test/before04.csv",
+		"afterFile": "input/test/after04.csv",
+		"outputFile": "output/test/check04",
+		"beforeEnvironment": "PFS",
+		"afterEnvironment": "PFS",
+		"keys": ["NF_ID", "NUM_DOC"],
+		"ignoreFields": ["NUM"]
+	}
+]

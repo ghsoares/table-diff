@@ -155,7 +155,7 @@ const compareEntries = (left, right, header, ignoreFields = []) => {
 					const r_val = r[h.name] ?? '';
 					if (ignoreFields.indexOf(h.name) == -1 && l_val != r_val) modifiedValues.push(h.name);
 				});
-				if (!modifiedValues.length) lines.push([LINE_UNMODIFIED, l.__index__, l]);
+				if (!modifiedValues.length) lines.push([LINE_UNMODIFIED, l.__index__, l, r]);
 				else lines.push([LINE_MODIFIED, l.__index__, l, r, modifiedValues]);
 				leftPointer++;
 				rightPointer++;
@@ -166,13 +166,19 @@ const compareEntries = (left, right, header, ignoreFields = []) => {
 	return lines;
 };
 
-const generateResultSheet = (compared, header, beforeEnv = "PFS", afterEnv = "TC2", settings = {}) => {
+const generateResultSheet = (
+	compared, header, beforeEnv = "PFS", afterEnv = "TC2",
+	mode = 'difference', settings = {}
+) => {
 	const {
 		resultMode = RESULT_MODE_INLINE,
 		resultGroup = false,
 		includeUnmodified = false,
 		lineUnmodifiedStyle = {
 			fill: { fgColor: { rgb: "E2E4E6" } }
+		},
+		lineDuplicatedStyle = {
+			fill: { fgColor: { rgb: "C5D9F1" } }
 		},
 		lineAddedStyle = {
 			fill: { fgColor: { rgb: "61FFAC" } }
@@ -259,6 +265,11 @@ const generateResultSheet = (compared, header, beforeEnv = "PFS", afterEnv = "TC
 			t: 's',
 			s: lineUnmodifiedStyle
 		},
+		duplicated: {
+			v: 'Duplicado',
+			t: 's',
+			s: lineDuplicatedStyle
+		},
 		created: {
 			v: `Criado em ${afterEnv}`,
 			t: 's',
@@ -298,76 +309,115 @@ const generateResultSheet = (compared, header, beforeEnv = "PFS", afterEnv = "TC
 		if (includeUnmodified) {
 			captionRows.push([operationCells.unmodified]);
 		}
-		captionRows.push(
-			[operationCells.created],
-			[operationCells.removed],
-			[operationCells.modifiedBefore],
-			[operationCells.modifiedAfter],
-			[operationCells.valueModified]
-		);
+		switch (mode) {
+			case 'difference': {
+				captionRows.push(
+					[operationCells.created],
+					[operationCells.removed],
+					[operationCells.modifiedBefore],
+					[operationCells.modifiedAfter],
+					[operationCells.valueModified]
+				);
+			} break;
+			case 'duplicate': {
+				captionRows.push(
+					[operationCells.duplicated]
+				);
+			} break;
+		};
+		
 		setCells(currentSpacing + captionsSpacing, 0, captionRows);
 	}
 
 	let y = 1;
 	compared.forEach(line => {
-		switch (line[0]) {
-			case LINE_UNMODIFIED: {
-				if (includeUnmodified) {
-					const row = header.map(s => ({ v: line[2][s.name], t: 's', s: lineUnmodifiedStyle }));
-					setCells(0, y, [row]);
+		switch (mode) {
+			case 'difference': {
+				switch (line[0]) {
+					case LINE_UNMODIFIED: {
+						if (includeUnmodified) {
+							const row = header.map(s => ({ v: line[2][s.name], t: 's', s: lineUnmodifiedStyle }));
+							setCells(0, y, [row]);
+							if (resultMode === RESULT_MODE_SIDE) {
+								setCells(header.length + sideSpacing, y, [row]);
+							}
+							if (includeOperation) {
+								setCells(currentOperationSpacing, y, [[operationCells.unmodified]]);
+							}
+							y += 1 + rowSpacing;
+						}
+					} break;
+					case LINE_ADDED: {
+						const row = header.map(s => ({ v: line[2][s.name], t: 's', s: lineAddedStyle }));
+						if (resultMode === RESULT_MODE_SIDE) {
+							setCells(header.length + sideSpacing, y, [row]);
+						} else {
+							setCells(0, y, [row]);
+						}
+						if (includeOperation) {
+							setCells(currentOperationSpacing, y, [[operationCells.created]]);
+						}
+						y += 1 + rowSpacing;
+					} break;
+					case LINE_REMOVED: {
+						const row = header.map(s => ({ v: line[2][s.name], t: 's', s: lineRemovedStyle }));
+						setCells(0, y, [row]);
+						if (includeOperation) {
+							setCells(currentOperationSpacing, y, [[operationCells.removed]]);
+						}
+						y += 1 + rowSpacing;
+					} break;
+					case LINE_MODIFIED: {
+						const leftRow = header.map(s => ({ v: line[2][s.name], t: 's', s: lineModifiedBeforeStyle }));
+						const rightRow = header.map(s => ({
+							v: line[3][s.name], t: 's', s: line[4].indexOf(s.name) == -1 ? lineModifiedAfterStyle : lineModifiedFieldStyle
+						}));
+		
+						setCells(0, y, [leftRow]);
+						if (resultMode === RESULT_MODE_SIDE) {
+							setCells(header.length + sideSpacing, y, [rightRow]);
+							if (includeOperation) {
+								setCells(currentOperationSpacing, y, [[operationCells.modified]]);
+							}
+						} else {
+							setCells(0, y + 1, [rightRow]);
+							if (includeOperation) {
+								setCells(currentOperationSpacing, y, [[operationCells.modifiedBefore]]);
+								setCells(currentOperationSpacing, y + 1, [[operationCells.modifiedAfter]]);
+							}
+							y += 1;
+						}
+						
+						y += 1 + rowSpacing;
+					} break;
+				}
+			} break;
+			case 'duplicate': {
+				if (line[0] == LINE_UNMODIFIED) {
+					const leftRow = header.map(s => ({ v: line[2][s.name], t: 's', s: lineDuplicatedStyle }));
+					const rightRow = header.map(s => ({ v: line[3][s.name], t: 's', s: lineDuplicatedStyle }));
+					
+					setCells(0, y, [leftRow]);
 					if (resultMode === RESULT_MODE_SIDE) {
-						setCells(header.length + sideSpacing, y, [row]);
+						setCells(header.length + sideSpacing, y, [rightRow]);
+						if (includeOperation) {
+							setCells(currentOperationSpacing, y, [[operationCells.duplicated]]);
+						}
+					} else {
+						setCells(0, y + 1, [rightRow]);
+						if (includeOperation) {
+							setCells(currentOperationSpacing, y, [[operationCells.duplicated]]);
+							setCells(currentOperationSpacing, y + 1, [[operationCells.duplicated]]);
+						}
+						y += 1;
 					}
-					if (includeOperation) {
-						setCells(currentOperationSpacing, y, [[operationCells.unmodified]]);
-					}
+
 					y += 1 + rowSpacing;
 				}
 			} break;
-			case LINE_ADDED: {
-				const row = header.map(s => ({ v: line[2][s.name], t: 's', s: lineAddedStyle }));
-				if (resultMode === RESULT_MODE_SIDE) {
-					setCells(header.length + sideSpacing, y, [row]);
-				} else {
-					setCells(0, y, [row]);
-				}
-				if (includeOperation) {
-					setCells(currentOperationSpacing, y, [[operationCells.created]]);
-				}
-				y += 1 + rowSpacing;
-			} break;
-			case LINE_REMOVED: {
-				const row = header.map(s => ({ v: line[2][s.name], t: 's', s: lineRemovedStyle }));
-				setCells(0, y, [row]);
-				if (includeOperation) {
-					setCells(currentOperationSpacing, y, [[operationCells.removed]]);
-				}
-				y += 1 + rowSpacing;
-			} break;
-			case LINE_MODIFIED: {
-				const leftRow = header.map(s => ({ v: line[2][s.name], t: 's', s: lineModifiedBeforeStyle }));
-				const rightRow = header.map(s => ({
-					v: line[3][s.name], t: 's', s: line[4].indexOf(s.name) == -1 ? lineModifiedAfterStyle : lineModifiedFieldStyle
-				}));
-
-				setCells(0, y, [leftRow]);
-				if (resultMode === RESULT_MODE_SIDE) {
-					setCells(header.length + sideSpacing, y, [rightRow]);
-					if (includeOperation) {
-						setCells(currentOperationSpacing, y, [[operationCells.modified]]);
-					}
-				} else {
-					setCells(0, y + 1, [rightRow]);
-					if (includeOperation) {
-						setCells(currentOperationSpacing, y, [[operationCells.modifiedBefore]]);
-						setCells(currentOperationSpacing, y + 1, [[operationCells.modifiedAfter]]);
-					}
-					y += 1;
-				}
-				
-				y += 1 + rowSpacing;
-			} break;
 		}
+
+		
 	});
 
 	const ws = XLSX.utils.aoa_to_sheet(data);
@@ -382,7 +432,9 @@ const compareFiles = ({
 	beforeEnvironment, afterEnvironment,
 	compareColumns,
 	ignoreFields,
-	keys, outputFile
+	keys,
+	outputFile,
+	mode
 }) => {
 	const [before, after, header] = mapFiles({
 		beforeFile, afterFile,
@@ -391,7 +443,7 @@ const compareFiles = ({
 		keys
 	});
 	const compared = compareEntries(before, after, header, ignoreFields);
-	const sheet = generateResultSheet(compared, header, beforeEnvironment, afterEnvironment);
+	const sheet = generateResultSheet(compared, header, beforeEnvironment, afterEnvironment, mode);
 	if (!existsSync(dirname(outputFile))) mkdirSync(dirname(outputFile), { recursive: true });
 	XLSX.writeFile(sheet, `${outputFile}.xlsx`);
 };

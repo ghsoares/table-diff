@@ -9,7 +9,8 @@
 		"keys": [
 			"UF", "UF_DESTINATION", "REVENUE_CODE"
 		],
-		"compareColumns": ["UF", "UF_DESTINATION", "REVENUE_CODE"]
+		"compareColumns": ["ID", "UF", "UF_DESTINATION", "REVENUE_CODE", "ID_TAX"],
+		"ignoreFields": ["ID"]
 	},
 	{
 		"disabled": true,
@@ -22,6 +23,6 @@
 		"keys": [
 			"UF", "UF_DESTINATION", "REVENUE_CODE"
 		],
-		"compareColumns": ["UF", "UF_DESTINATION", "REVENUE_CODE"]
+		"compareColumns": ["UF", "UF_DESTINATION", "REVENUE_CODE", "ID_TAX"]
 	}
 ]
