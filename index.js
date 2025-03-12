@@ -33,6 +33,9 @@ const mapSheet = (sheetLines, keys = [], remap = [], compareColumns = null) => {
 		header.forEach(h => {
 			h.idx = h.idx;
 			obj[h.name] = String(line[h.idx]).trim();
+			if (obj[h.name] == '?' || obj[h.name] == '' || obj[h.name] == 'null' || obj[h.name] == 'undefined') {
+				obj[h.name] = '';
+			}
 		});
 
 		remap.forEach(r => {
@@ -40,7 +43,7 @@ const mapSheet = (sheetLines, keys = [], remap = [], compareColumns = null) => {
 			let val = obj[column];
 			switch (type) {
 				case "DATE": {
-					if (val !== null && val !== '?' && val !== 'null') {
+					if (val !== null && val !== '' && val !== '?' && val !== 'null') {
 						const { from, to } = r;
 						const d = moment(val, from);
 						if (!d.isValid()) {
@@ -484,8 +487,8 @@ const readConfig = (basePath, configPath) => {
 
 	config.forEach(conf => {
 		if (conf.disabled) return;
-		if (conf.configPath) {
-			const innerConfig = readConfig(configBasePath, conf.configPath);
+		if (conf.useConfig) {
+			const innerConfig = readConfig(configBasePath, conf.useConfig);
 			settings.push(...innerConfig);
 		} else {
 			settings.push(conf);
@@ -508,6 +511,8 @@ while (true) {
 
 	if (configPath != null) {
 		const config = readConfig(process.cwd(), configPath);
+
+		console.log(config)
 
 		config.forEach(conf => {
 			console.log(`Executando '${conf.name}'...`);

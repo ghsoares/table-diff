@@ -1,0 +1,26 @@
+[
+	{
+		"name": "DE x Para Livro de Apuração SPED Fiscal",
+		"beforeFile": "input/PHP/LIVRO_APURACAO.csv",
+		"afterFile": "input/TC2/LIVRO_APURACAO.csv",
+		"outputFile": "output/LIVRO_APURACAO",
+		"beforeEnvironment": "PHP",
+		"afterEnvironment": "TC2",
+		"keys": [
+			"TRIBUTO",
+			"TIPO_TRIBUTO",
+			"LINHA_LIVRO",
+			"COD_AJUSTE",
+			"INDICADOR_AJUSTE",
+			"APURACAO",
+			"UTILIZACAO",
+			"TIPO_APURACAO",
+			"REFLEXO_APURACAO",
+			"COD_OBRIGACAO_ICMS",
+			"INATIVO",
+			"DT_FIM_VIGENCIA"
+		],
+		"ignoreFields": ["ID", "ID_OBRIGACAO_ICMS", "CREATION.DATE", "CREATION.ID_USER", "MODIFICATION.DATE", "MODIFICATION.ID_USER", "DT_FIM_VIGENCIA", "DT_INI_VIGENCIA"]
+		
+	}
+]

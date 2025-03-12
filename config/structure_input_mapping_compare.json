@@ -10,20 +10,20 @@
 			"STRUCTURE_ID",
 			"MAPPING_ID"
 		],
-		"ignoreFields": ["CREATION_USER", "MODIFICATION_USER"]
+		"ignoreFields": ["CREATION_USER", "MODIFICATION_USER", "MODIFICATION_DATE"]
 	},
 	{
 		"name": "Mapeamento de parâmetros por mapeamento de parâmetros de entrada",
-		"beforeFile": "input/PFS/structure/ATR_INPUT_PARAMETERS_MAPPING_X_MAPPING.csv",
-		"afterFile": "input/TC2/structure/ATR_INPUT_PARAMETERS_MAPPING_X_MAPPING.csv",
-		"outputFile": "output/structure/ATR_INPUT_PARAMETERS_MAPPING_X_MAPPING",
+		"beforeFile": "input/PFS/structure/ATR_INPUT_PARAMETERS_MAPPING_FIELDS_X_MAPPING.csv",
+		"afterFile": "input/TC2/structure/ATR_INPUT_PARAMETERS_MAPPING_FIELDS_X_MAPPING.csv",
+		"outputFile": "output/structure/ATR_INPUT_PARAMETERS_MAPPING_FIELDS_X_MAPPING",
 		"beforeEnvironment": "PFS",
 		"afterEnvironment": "TC2",
 		"keys": [
 			"MAPPING_ID",
 			"INPUT_PARAMETER"
 		],
-		"ignoreFields": ["CREATION_USER", "MODIFICATION_USER"]
+		"ignoreFields": ["CREATION_USER", "MODIFICATION_USER", "MODIFICATION_DATE"]
 	},
 	{
 		"name": "Mapeamento de parâmetros auxiliares",
@@ -36,6 +36,6 @@
 			"STRUCTURE_ID",
 			"MAPPING_ID"
 		],
-		"ignoreFields": ["CREATION_USER", "MODIFICATION_USER"]
+		"ignoreFields": ["CREATION_USER", "MODIFICATION_USER", "MODIFICATION_DATE"]
 	}
 ]

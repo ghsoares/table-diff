@@ -9,7 +9,7 @@
 		"keys": [
 			"STRUCTURE_GROUP_ID"
 		],
-		"ignoreFields": ["CREATION_USER", "MODIFICATION_USER"]
+		"ignoreFields": ["CREATION_USER", "MODIFICATION_USER_ID", "MODIFICATION_USER", "MODIFICATION_DATE"]
 	},
 	{
 		"name": "Estruturas por Grupos de Estruturas",
@@ -20,7 +20,8 @@
 		"afterEnvironment": "TC2",
 		"keys": [
 			"STRUCTURE_GROUP_ID",
-			"STRUCTURE_ID"
+			"STRUCTURE_ID",
+			"MODIFICATION_USER"
 		]
 	}
 ]

@@ -1,0 +1,14 @@
+[
+	{
+		"name": "CORE Labels",
+		"beforeFile": "input/PFS/CORE_Labels.csv",
+		"afterFile": "input/TC2/CORE_Labels.csv",
+		"outputFile": "output/CORE_Labels",
+		"beforeEnvironment": "PFS",
+		"afterEnvironment": "TC2",
+		"keys": [
+			"OBJTYPE", "KEY"
+		],
+		"ignoreFields": ["ID"]
+	}
+]
